@@ -1,0 +1,636 @@
+openapi: 3.0.0
+info:
+  version: '1.0.0'
+  title: 'API Documentation'
+  description: 'This is an API documentation for Explorer'
+servers:
+  - description: Local Machine server
+    url: http://localhost:8000
+tags:
+  - name: Admin
+    description: Admin Operations
+  - name: User
+    description: User Operations
+  - name: Admin Survey
+    description: Admin Survey Operations
+  - name: User Survey
+    description: User Survey Operations
+
+#
+                #--------------------               ------------------#
+                #--------------------     User      ------------------#
+                #--------------------   Management  ------------------#
+                #--------------------               ------------------#
+
+paths:
+  /user/login:
+    post:
+      tags:
+        - User
+      summary: User Login
+      operationId: userLogin
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                username:
+                  description: Email Address
+                  type: string
+                password:
+                  description: Login Password
+                  type: string
+              required:
+                - username
+                - password
+      responses:
+        "200":
+          description: successful operation
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: date in UTC when token expires
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Invalid username/password supplied
+
+  /user/signup:
+    post:
+      tags:
+        - User
+      summary: User Signup
+      operationId: userSignup
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  description: Name
+                  type: string
+                email:
+                  description: Email
+                  type: string
+                dob:
+                  description: Date Of Birth
+                  type: string
+                gender:
+                  description: Gender
+                  type: string
+                  enum:
+                    - Male
+                    - Female
+                    - Other
+                password:
+                  description: Password
+                  type: string
+                passwordConfirmation:
+                  description: Confrim Password
+                  type: string
+              required:
+                - dob
+                - password
+                - passwordConfirmation
+                - name
+                - email
+                - gender
+      responses:
+        "200":
+          description: successful operation
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: date in UTC when token expires
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Invalid username/password supplied
+  
+#
+                #--------------------               ------------------#
+                #--------------------     Admin     ------------------#
+                #--------------------   Management  ------------------#
+                #--------------------               ------------------#
+
+  /admin/user-signup:
+    post:
+      tags:
+        - Admin
+      summary: Admin User Signup
+      operationId: admiUserSignup
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  description: Name
+                  type: string
+                email:
+                  description: Email
+                  type: string
+                dob:
+                  description: Date Of Birth
+                  type: string
+                gender:
+                  description: Gender
+                  type: string
+                  enum:
+                    - Male
+                    - Female
+                    - Other
+                password:
+                  description: Password
+                  type: string
+              required:
+                - dob
+                - password
+                - name
+                - email
+                - gender
+      responses:
+        "200":
+          description: successful operation
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: date in UTC when token expires
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Invalid username/password supplied
+
+  /admin/dashboard-details:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Admin
+      summary: Admin Dashboard Details
+      operationId: adminDashboardDetails
+      # parameters:
+      #   - in: query
+      #     name: countryCode
+      #     required: true
+      #     description: Country Code
+      #     schema:
+      #       type: string
+      responses:
+        "200":
+          description: successful operation
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: date in UTC when token expires
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Invalid username/password supplied
+  
+
+#
+                #--------------------               ------------------#
+                #--------------------  Admin Survey ------------------#
+                #--------------------   Management  ------------------#
+                #--------------------               ------------------#
+
+  /admin/get-survey-list:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Admin Survey
+      summary: Admin Survey Action
+      operationId: adminSurveyList
+      # parameters:
+      #   - in: query
+      #     name: countryCode
+      #     required: true
+      #     description: Country Code
+      #     schema:
+      #       type: string
+      responses:
+        "200":
+          description: successful operation
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: date in UTC when token expires
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Invalid username/password supplied
+
+  /admin/get-user-list:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Admin Survey
+      summary: Admin User List
+      operationId: adminUserList
+      # parameters:
+      #   - in: query
+      #     name: countryCode
+      #     required: true
+      #     description: Country Code
+      #     schema:
+      #       type: string
+      responses:
+        "200":
+          description: successful operation
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: date in UTC when token expires
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Invalid username/password supplied
+
+  /admin/send-users-invite:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Admin Survey
+      summary: Send Invite To User
+      operationId: adminSendUserInvite
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                usersId:
+                  description: User Id Array
+                  type: array
+                  items:
+                    type: string
+                surveyId:
+                  description: Survey Id
+                  type: string
+              required:
+                - usersId
+                - surveyId
+      responses:
+        "200":
+          description: successful operation
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: date in UTC when token expires
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Invalid username/password supplied
+
+  /admin/get-user-survey-list:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Admin Survey
+      summary: Admin User Survey List
+      operationId: adminUserSurvayList
+      # parameters:
+      #   - in: query
+      #     name: countryCode
+      #     required: true
+      #     description: Country Code
+      #     schema:
+      #       type: string
+      responses:
+        "200":
+          description: successful operation
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: date in UTC when token expires
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Invalid username/password supplied
+
+#
+                #--------------------               ------------------#
+                #--------------------  User Survey  ------------------#
+                #--------------------   Management  ------------------#
+                #--------------------               ------------------#
+
+  /user/get-survey-list:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - User Survey
+      summary: User Survey List
+      operationId: userSurvayList
+      # parameters:
+      #   - in: query
+      #     name: countryCode
+      #     required: true
+      #     description: Country Code
+      #     schema:
+      #       type: string
+      responses:
+        "200":
+          description: successful operation
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: date in UTC when token expires
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Invalid username/password supplied
+
+  /user/get-survey-form-details:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - User Survey
+      summary: User Survey Form Details
+      operationId: userSurveyFormDetails
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                token:
+                  description: Survay Token
+                  type: string
+              required:
+                - token
+      responses:
+        "200":
+          description: successful operation
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: date in UTC when token expires
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Invalid username/password supplied
+
+  /user/submit-survey-details:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - User Survey
+      summary: Submit User Survey Form Details
+      operationId: submitUserSurveyFormDetails
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                token:
+                  description: Survay Token
+                  type: string
+                data:
+                  description: Survay Details In Object
+                  type: string
+              required:
+                - token
+                - data
+      responses:
+        "200":
+          description: successful operation
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: date in UTC when token expires
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                type: string
+        "400":
+          description: Invalid username/password supplied
+
+
+components:
+
+  schemas:
+
+    doctorObject:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        phone:
+          type: string
+        dob:
+          type: string
+        gender:
+          type: string
+        zipcode:
+          type: string
+        addressLine1:
+          type: string
+        addressLine2:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        country:
+          type: string
+        countryCode:
+          type: string
+        biography:
+          type: string
+        pricingType:
+          type: string
+        priceCharges:
+          type: string
+        services:
+          type: array
+          items:
+            type: string
+        specialization:
+          type: array
+          items:
+            type: string
+        membership:
+          type: array
+          items:
+            type: string
+        education:
+          type: array
+          items:
+            $ref: "#/components/schemas/doctorEducation"
+        experience:
+          type: array
+          items:
+            $ref: "#/components/schemas/doctorExperience"
+        awards:
+          type: array
+          items:
+            $ref: "#/components/schemas/doctorAwards"
+        registrations:
+          type: array
+          items:
+            $ref: "#/components/schemas/doctorRegistrations"
+
+    doctorEducation:
+      type: object
+      properties:
+        degree:
+          type: string
+        collegName:
+          type: string
+        completionYear:
+          type: string
+
+    doctorExperience:
+      type: object
+      properties:
+        hospitalName:
+          type: string
+        from:
+          type: string
+        to:
+          type: string
+        designation:
+          type: string
+
+    doctorAwards:
+      type: object
+      properties:
+        name:
+          type: string
+        year:
+          type: string
+
+    doctorRegistrations:
+      type: object
+      properties:
+        name:
+          type: string
+        year:
+          type: string
+
+    ofacHeaders:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+
+
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
